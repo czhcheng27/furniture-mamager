@@ -1,0 +1,1 @@
+// 状态定义与操作 (addItem, updateItem, selectItem)
