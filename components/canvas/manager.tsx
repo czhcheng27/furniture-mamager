@@ -1,0 +1,29 @@
+// 这是整个系统的**“渲染引擎”**。它的唯一任务是：观察 items 数组，并为每一个 JSON 对象生成一个对应的 3D 组件。
+// components/canvas/manager.tsx
+'use client'
+
+import { useStore } from '@/store/use-store'
+import { FurnitureItem } from './furniture-item'
+
+export function Manager() {
+  // 1. 只选择 items 数组，避免不必要的重绘
+  const items = useStore((state) => state.items)
+  const selectedId = useStore((state) => state.selectedId)
+  const selectItem = useStore((state) => state.selectItem)
+
+  return (
+    <group>
+      {items.map((item) => (
+        <FurnitureItem
+          key={item.id}
+          data={item}
+          isSelected={selectedId === item.id}
+          onClick={(e) => {
+            e.stopPropagation() // 防止点击模型穿透到地板
+            selectItem(item.id)
+          }}
+        />
+      ))}
+    </group>
+  )
+}
