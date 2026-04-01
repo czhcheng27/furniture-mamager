@@ -10,6 +10,7 @@ export const FURNITURE_ASSETS: AssetDefinition[] = [
     label: "现代布艺沙发",
     thumbnail: "🛋️",
     modelPath: "/models/sofa.glb",
+    initialScale: 1,
     defaultProperties: { color: "#4a5568", roughness: 0.9, metalness: 0.1 },
   },
   {
@@ -17,7 +18,8 @@ export const FURNITURE_ASSETS: AssetDefinition[] = [
     type: "lamp",
     label: "极简落地灯",
     thumbnail: "💡",
-    modelPath: "/models/sofa.glb",
+    modelPath: "/models/lamp.glb",
+    initialScale: 1,
     defaultProperties: { color: "#ffffff", roughness: 0.2, metalness: 0.8 },
   },
   {
@@ -25,7 +27,8 @@ export const FURNITURE_ASSETS: AssetDefinition[] = [
     type: "table",
     label: "胡桃木餐桌",
     thumbnail: "🪑",
-    modelPath: "/models/sofa.glb",
+    modelPath: "/models/table.glb",
+    initialScale: 0.01,
     defaultProperties: { color: "#744210", roughness: 0.4, metalness: 0.0 },
   },
 ];
