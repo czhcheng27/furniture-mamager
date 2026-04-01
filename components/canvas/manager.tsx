@@ -1,15 +1,15 @@
-// 这是整个系统的**“渲染引擎”**。它的唯一任务是：观察 items 数组，并为每一个 JSON 对象生成一个对应的 3D 组件。
+// 这是整个系统的**“渲染引擎”**。它的唯一任务是：观察 items 数组，并为每一个 JSON 对象生成一个对应的 3D 组件。监听 Store，循环渲染。
 // components/canvas/manager.tsx
-'use client'
+"use client";
 
-import { useStore } from '@/store/use-store'
-import { FurnitureItem } from './furniture-item'
+import { useStore } from "@/store/use-store";
+import { FurnitureItem } from "./furniture-item";
 
 export function Manager() {
   // 1. 只选择 items 数组，避免不必要的重绘
-  const items = useStore((state) => state.items)
-  const selectedId = useStore((state) => state.selectedId)
-  const selectItem = useStore((state) => state.selectItem)
+  const items = useStore((state) => state.items);
+  const selectedId = useStore((state) => state.selectedId);
+  const selectItem = useStore((state) => state.selectItem);
 
   return (
     <group>
@@ -19,11 +19,11 @@ export function Manager() {
           data={item}
           isSelected={selectedId === item.id}
           onClick={(e) => {
-            e.stopPropagation() // 防止点击模型穿透到地板
-            selectItem(item.id)
+            e.stopPropagation(); // 防止点击家具时触发地面的点击事件
+            selectItem(item.id);
           }}
         />
       ))}
     </group>
-  )
+  );
 }

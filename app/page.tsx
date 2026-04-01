@@ -1,7 +1,22 @@
 // 主编辑器入口 (将 Editor UI 与 3D Canvas 组合)
+"use client";
+
+import dynamic from "next/dynamic";
 import Inspector from "@/components/editor/inspector";
 import JsonPanel from "@/components/editor/json-panel";
 import Sidebar from "@/components/editor/sidebar";
+
+// 【关键】使用 dynamic 且禁用 ssr
+const Scene = dynamic(() => import("@/components/canvas/scene"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center bg-[#090a0f]">
+      <div className="text-blue-500 animate-pulse font-mono text-sm tracking-widest">
+        INITIALIZING 3D ENGINE...
+      </div>
+    </div>
+  ),
+});
 
 export default function Home() {
   return (
@@ -27,16 +42,8 @@ export default function Home() {
 
         {/* 中间：3D 核心区 */}
         <section className="relative flex-1 bg-[#090a0f] flex flex-col">
-          {/* 这里之后放 Canvas */}
-          <div className="flex-1 flex items-center justify-center border border-blue-500/20 m-4 rounded-3xl">
-            <div className="text-center">
-              <p className="text-slate-500 font-mono italic">
-                {"<ReactThreeFiber_Canvas />"}
-              </p>
-              <p className="text-xs text-slate-700 mt-2">
-                3D Scene Engine Placeholder
-              </p>
-            </div>
+          <div className="flex-1 relative">
+            <Scene />
           </div>
 
           {/* 底部：JSON 面板 (悬浮效果) */}

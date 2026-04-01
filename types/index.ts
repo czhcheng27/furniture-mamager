@@ -18,6 +18,7 @@ export interface AssetDefinition {
   label: string;
   thumbnail: string;
   modelPath: string;
+  initialScale: number;
   defaultProperties: FurnitureMaterial; // 复用材质接口
 }
 
