@@ -2,6 +2,8 @@
 // components/canvas/furniture-item.tsx
 "use client";
 
+import { useEffect } from "react";
+import * as THREE from "three";
 import { GLTF } from "three-stdlib";
 import { useGLTF, PivotControls } from "@react-three/drei";
 import { useStore } from "@/store/use-store";
@@ -25,6 +27,22 @@ export function FurnitureItem({ data, isSelected, onClick }: Props) {
     (a) => a.modelPath === data.modelPath,
   );
   const s = assetInfo?.initialScale ?? 1;
+
+  useEffect(() => {
+    scene.traverse((child) => {
+      // 检查是否是 Mesh（物体表面）
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        // 只有 Mesh 才有 material 属性
+        if (mesh.material) {
+          // 使用 Three.js 的 .set() 方法更新颜色
+          (mesh.material as THREE.MeshStandardMaterial).color.set(
+            data.material.color,
+          );
+        }
+      }
+    });
+  }, [scene, data.material.color]); // 监听数据中 material 的 color 变化
 
   return (
     // PivotControls 就是 UI 图里那个红绿蓝轴向器
