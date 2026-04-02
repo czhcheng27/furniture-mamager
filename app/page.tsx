@@ -2,6 +2,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useState } from "react";
 import Inspector from "@/components/editor/inspector";
 import JsonPanel from "@/components/editor/json-panel";
 import Sidebar from "@/components/editor/sidebar";
@@ -19,6 +20,8 @@ const Scene = dynamic(() => import("@/components/canvas/scene"), {
 });
 
 export default function Home() {
+  const [isJsonExpanded, setIsJsonExpanded] = useState(false);
+
   return (
     // 全屏容器，禁止滚动
     <main className="h-screen w-screen flex flex-col bg-[#0d0f14] text-slate-200 overflow-hidden">
@@ -47,8 +50,15 @@ export default function Home() {
           </div>
 
           {/* 底部：JSON 面板 (悬浮效果) */}
-          <div className="absolute bottom-6 left-6 right-6 h-40">
-            <JsonPanel />
+          <div
+            className={`absolute inset-x-6 bottom-6 z-10 transition-all duration-300 ease-out ${
+              isJsonExpanded ? "top-6" : "h-40"
+            }`}
+          >
+            <JsonPanel
+              isExpanded={isJsonExpanded}
+              onToggleExpand={() => setIsJsonExpanded((value) => !value)}
+            />
           </div>
         </section>
 

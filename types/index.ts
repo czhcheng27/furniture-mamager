@@ -38,7 +38,7 @@ export interface SceneStore {
   selectedId: string | null;
 
   // Actions
-  addItem: (asset: any, position: Vector3Array) => void;
+  addItem: (asset: AssetDefinition, position: Vector3Array) => void;
   updateItem: (id: string, updates: Partial<FurnitureItem>) => void;
   removeItem: (id: string) => void;
   selectItem: (id: string | null) => void;
