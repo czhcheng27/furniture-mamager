@@ -1,12 +1,13 @@
 // components/editor/sidebar/index.tsx
 "use client";
 
+import { Plus } from "lucide-react";
 import { FURNITURE_ASSETS } from "@/constants/assets";
 import { useStore } from "@/store/use-store";
-import { Plus } from "lucide-react";
 
 const Sidebar = () => {
   const addItem = useStore((state) => state.addItem);
+
   return (
     <div className="p-4 flex flex-col h-full">
       <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">
@@ -17,6 +18,14 @@ const Sidebar = () => {
         {FURNITURE_ASSETS.map((asset) => (
           <button
             key={asset.id}
+            draggable
+            // 拖拽开始：将资产数据存入 dataTransfer
+            onDragStart={(e) => {
+              // 这里的 key "furniture-data" 是我们自定义的协议
+              e.dataTransfer.setData("furniture-data", JSON.stringify(asset));
+              // 设置拖拽效果
+              e.dataTransfer.effectAllowed = "move";
+            }}
             onClick={() => {
               // 默认添加到房间中心点 [0, 0, 0]
               addItem(asset, [0, 0, 0]);
