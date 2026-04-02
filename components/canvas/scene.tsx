@@ -5,7 +5,6 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Grid, ContactShadows } from "@react-three/drei";
 import { Manager } from "./manager";
-import { Suspense } from "react";
 
 export default function Scene() {
   return (
@@ -29,12 +28,9 @@ export default function Scene() {
       {/* 2. 把 3D 场景的底色直接改成和网页背景一样的深黑色 */}
       <color attach="background" args={["#090a0f"]} />
 
-      {/* 3. 核心逻辑：Manager 会根据 Zustand 的数据渲染模型 */}
-      {/* 等待状态机：3D 模型和环境贴图体积很大。当它们还在下载时，Suspense 保证页面不崩溃，显示一个 fallback。 */}
-      <Suspense fallback={null}>
-        {/* 逻辑调度员：负责把 Zustand 里的数据变成 3D 实体。 */}
-        <Manager />
-      </Suspense>
+      {/* 3. 核心逻辑：Manager 会根据 Zustand 的数据渲染模型。
+          每个家具自己的加载状态在 item 级别处理，避免新增模型时整组场景一起闪烁。 */}
+      <Manager />
 
       {/* 4. 辅助视觉：地板网格 */}
       <Grid

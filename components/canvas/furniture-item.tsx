@@ -108,3 +108,7 @@ export function FurnitureItem({ data, isSelected, onClick }: Props) {
     </PivotControls>
   );
 }
+
+for (const asset of FURNITURE_ASSETS) {
+  useGLTF.preload(asset.modelPath);
+}
