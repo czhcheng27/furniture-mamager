@@ -2,6 +2,7 @@
 // components/canvas/scene.tsx
 "use client";
 
+import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { SceneContent } from "./scene-content"; // 抽离内部逻辑方便使用 hooks
 
@@ -42,7 +43,9 @@ export default function Scene() {
           preserveDrawingBuffer: true,
         }}
       >
-        <SceneContent />
+        <Suspense fallback={null}>
+          <SceneContent />
+        </Suspense>
       </Canvas>
     </div>
   );
