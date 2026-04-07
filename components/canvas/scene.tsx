@@ -35,7 +35,7 @@ export default function Scene() {
       <Canvas
         shadows="soft" // 阴影总开关：没有它，物体就像悬浮在空中，没有真实感。
         // 设置相机初始位置：从侧上方俯瞰
-        camera={{ position: [5, 5, 5], fov: 45 }}
+        camera={{ position: [0, 1.6, 8], fov: 32 }}
         // WebGL 渲染器配置
         gl={{
           antialias: true, // 开启抗锯齿
