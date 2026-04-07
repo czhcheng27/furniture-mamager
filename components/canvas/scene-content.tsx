@@ -55,6 +55,8 @@ export function SceneContent() {
   // 3. 修复阴影弃用警告并设置基础 GL 属性
   useEffect(() => {
     gl.shadowMap.enabled = true;
+    gl.toneMapping = THREE.ACESFilmicToneMapping;
+    gl.toneMappingExposure = 1.35;
     gl.shadowMap.type = THREE.PCFShadowMap; // 替换掉弃用的 PCFSoftShadowMap
   }, [gl]);
 
@@ -121,16 +123,29 @@ export function SceneContent() {
     <>
       {/* 1. 灯光系统 */}
       {/* 环境光：它是“无死角”的光，提供基础亮度，防止背光面全黑。 */}
-      <ambientLight intensity={1.0} />
+      <ambientLight intensity={1.45} color="#f8fafc" />
+      {/* 半球光：args = [skyColor, groundColor, intensity] */}
+      <hemisphereLight
+        args={["#fff7ed", "#cbd5e1", 1.1]}
+        position={[0, 8, 0]}
+      />
+      <directionalLight
+        position={[6, 9, 4]} // 光从右上方打下来
+        intensity={2.2}
+        color="#fff4d6"
+        castShadow // 开启阴影
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+      />
       {/* 点光源：像一个灯泡，有具体位置，能产生阴影和高光。 */}
-      <pointLight position={[10, 10, 10]} intensity={1.5} castShadow />
+      <pointLight position={[-4, 4, -3]} intensity={1.2} color="#dbeafe" />
 
       {/* 2. 把 3D 场景的底色直接改成和网页背景一样的深黑色 */}
       <color attach="background" args={["#090a0f"]} />
 
       {/* 使用 Bvh 包裹，大幅优化高面数模型的射线检测性能 */}
       <Bvh firstHitOnly>
-        <primitive object={roomModel} />
+        <primitive object={roomModel} name="room-model-container" />
       </Bvh>
 
       {/* 3. 核心逻辑：Manager 会根据 Zustand 的数据渲染模型。
