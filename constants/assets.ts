@@ -7,7 +7,7 @@ export const FURNITURE_ASSETS: AssetDefinition[] = [
   {
     id: "asset-sofa-01",
     type: "sofa",
-    label: "现代布艺沙发",
+    label: "Modern Sofa",
     thumbnail: "🛋️",
     modelPath: "/models/sofa.glb",
     initialScale: 1,
@@ -16,7 +16,7 @@ export const FURNITURE_ASSETS: AssetDefinition[] = [
   {
     id: "asset-lamp-01",
     type: "lamp",
-    label: "极简落地灯",
+    label: "Floor Lamp",
     thumbnail: "💡",
     modelPath: "/models/lamp.glb",
     initialScale: 1,
@@ -25,7 +25,7 @@ export const FURNITURE_ASSETS: AssetDefinition[] = [
   {
     id: "asset-table-01",
     type: "table",
-    label: "胡桃木餐桌",
+    label: "Dining Table",
     thumbnail: "🪑",
     modelPath: "/models/table.glb",
     initialScale: 0.001,
