@@ -9,7 +9,11 @@ import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { useStore } from "@/store/use-store";
 import { Manager } from "./manager";
 
-export function SceneContent() {
+type SceneContentProps = {
+  onReadyChange: (isReady: boolean) => void;
+};
+
+export function SceneContent({ onReadyChange }: SceneContentProps) {
   const { raycaster, camera, gl } = useThree();
   const addItem = useStore((state) => state.addItem);
 
@@ -70,6 +74,14 @@ export function SceneContent() {
     console.log("camera.position", [camX, camY, camZ]);
     console.log("controls.target", [targetX, targetY, targetZ]);
   }, [roomModel, camera]);
+
+  useEffect(() => {
+    const frameId = window.requestAnimationFrame(() => {
+      onReadyChange(true);
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [onReadyChange, roomModel]);
 
   // 3. 修复阴影弃用警告并设置基础 GL 属性
   useEffect(() => {

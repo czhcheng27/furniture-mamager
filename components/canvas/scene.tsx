@@ -2,11 +2,13 @@
 // components/canvas/scene.tsx
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { SceneContent } from "./scene-content"; // 抽离内部逻辑方便使用 hooks
 
 export default function Scene() {
+  const [isRoomReady, setIsRoomReady] = useState(false);
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const rawData = e.dataTransfer.getData("furniture-data");
@@ -44,9 +46,17 @@ export default function Scene() {
         }}
       >
         <Suspense fallback={null}>
-          <SceneContent />
+          <SceneContent onReadyChange={setIsRoomReady} />
         </Suspense>
       </Canvas>
+
+      {!isRoomReady ? (
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-[#090a0f]">
+          <div className="animate-pulse font-mono text-sm tracking-widest text-blue-500">
+            INITIALIZING 3D ENGINE...
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
