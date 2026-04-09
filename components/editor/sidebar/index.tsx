@@ -11,7 +11,11 @@ const ASSET_ICONS = {
   table: Table2,
 } as const;
 
-const Sidebar = () => {
+interface SidebarProps {
+  onAssetAdded?: () => void;
+}
+
+const Sidebar = ({ onAssetAdded }: SidebarProps) => {
   const addItem = useStore((state) => state.addItem);
 
   return (
@@ -39,12 +43,13 @@ const Sidebar = () => {
               // 设置拖拽效果
               e.dataTransfer.effectAllowed = "move";
             }}
-            onClick={() => {
-              // 默认添加到房间中心点 [0, 0, 0]
-              addItem(asset, [0, 0, 0]);
-            }}
-            className="group grid aspect-square w-full min-w-0 grid-rows-[1fr_auto] overflow-hidden rounded-2xl border border-slate-800 bg-[#1c212c] p-3 text-center transition-all hover:border-blue-500/50 hover:bg-[#232936]"
-          >
+              onClick={() => {
+                // 默认添加到房间中心点 [0, 0, 0]
+                addItem(asset, [0, 0, 0]);
+                onAssetAdded?.();
+              }}
+              className="group grid aspect-square w-full min-w-0 grid-rows-[1fr_auto] overflow-hidden rounded-2xl border border-slate-800 bg-[#1c212c] p-3 text-center transition-all hover:border-blue-500/50 hover:bg-[#232936]"
+            >
             {/* 缩略图占位 */}
             <div className="flex items-center justify-center self-center">
               <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-slate-700/80 bg-[#0d0f14] text-slate-100 transition-all group-hover:scale-110 group-hover:border-blue-400/50 group-hover:text-blue-300">
