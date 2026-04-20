@@ -4,9 +4,11 @@
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Braces, ChevronDown, ChevronUp, X } from "lucide-react";
+import HistoryControls from "@/components/editor/history-controls";
 import Inspector from "@/components/editor/inspector";
 import JsonPanel from "@/components/editor/json-panel";
 import Sidebar from "@/components/editor/sidebar";
+import { useSceneHistoryShortcuts } from "@/hooks/use-scene-history";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/store/use-store";
 
@@ -31,6 +33,8 @@ export default function Home() {
   const selectedId = useStore((state) => state.selectedId);
   const selectedItem = items.find((item) => item.id === selectedId);
   const hasSelection = Boolean(selectedItem);
+
+  useSceneHistoryShortcuts();
 
   const toggleMobilePanel = (panel: Exclude<MobilePanel, null>) => {
     setMobilePanel((current) => (current === panel ? null : panel));
@@ -81,9 +85,7 @@ export default function Home() {
                 {selectedItem?.name ?? "No selection"}
               </span>
             </div>
-            <div className="hidden gap-4 xl:flex">
-              <div className="h-8 w-24 animate-pulse rounded bg-slate-800" />
-            </div>
+            <HistoryControls />
           </div>
         </div>
 
@@ -164,7 +166,8 @@ export default function Home() {
 
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 px-4 pb-4 xl:hidden">
         <div className="pointer-events-auto mx-auto max-w-md rounded-[1.75rem] border border-slate-700/80 bg-[#0f131b]/92 p-2 shadow-[0_18px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl">
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-5 gap-2">
+            <HistoryControls mode="mobile" />
             {(["assets", "json", "inspector"] as const).map((panel) => (
               <button
                 key={panel}
