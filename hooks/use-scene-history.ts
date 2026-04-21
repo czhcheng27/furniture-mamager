@@ -1,16 +1,10 @@
 "use client";
 
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect } from "react";
 import type { TemporalState } from "zundo";
 import { shallow } from "zustand/shallow";
 import { useStoreWithEqualityFn } from "zustand/traditional";
-import {
-  flushSceneHistory,
-  getHasPendingSceneHistory,
-  subscribeSceneHistoryBatch,
-  type SceneHistoryState,
-  useStore,
-} from "@/store/use-store";
+import { type SceneHistoryState, useStore } from "@/store/use-store";
 
 type SceneTemporalState = TemporalState<SceneHistoryState>;
 
@@ -51,13 +45,6 @@ const shouldIgnoreShortcuts = (target: EventTarget | null) => {
 };
 
 export function useSceneHistory() {
-  // 除了 zundo 已经落进 pastStates/futureStates 的记录，
-  // 我们还要感知“正在等待合并窗口结束”的那一批更新。
-  const hasPendingHistory = useSyncExternalStore(
-    subscribeSceneHistoryBatch,
-    getHasPendingSceneHistory,
-    getHasPendingSceneHistory,
-  );
   const { pastDepth, futureDepth, redo: baseRedo, undo: baseUndo } =
     useTemporalStore(
       (state) => ({
@@ -69,23 +56,12 @@ export function useSceneHistory() {
       shallow,
     );
 
-  const undo = () => {
-    // 先把还没正式入栈的批次 flush 掉，再执行真正的 undo。
-    flushSceneHistory();
-    baseUndo();
-  };
-
-  const redo = () => {
-    flushSceneHistory();
-    baseRedo();
-  };
-
   return {
+    // 现在按钮是否可用，完全以两个历史栈的真实长度为准。
     canRedo: futureDepth > 0,
-    // 用户刚拖完但 200ms 还没到时，按钮也应该立刻可点。
-    canUndo: hasPendingHistory || pastDepth > 0,
-    redo,
-    undo,
+    canUndo: pastDepth > 0,
+    redo: baseRedo,
+    undo: baseUndo,
   };
 }
 

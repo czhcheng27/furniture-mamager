@@ -40,7 +40,7 @@ export default function HistoryControls({
       <>
         <button
           type="button"
-          onClick={undo}
+          onClick={() => undo()}
           disabled={!canUndo}
           aria-label="Undo"
           title="Undo"
@@ -50,7 +50,7 @@ export default function HistoryControls({
         </button>
         <button
           type="button"
-          onClick={redo}
+          onClick={() => redo()}
           disabled={!canRedo}
           aria-label="Redo"
           title="Redo"
@@ -66,7 +66,7 @@ export default function HistoryControls({
     <div className="hidden items-center gap-2 xl:flex">
       <button
         type="button"
-        onClick={undo}
+        onClick={() => undo()}
         disabled={!canUndo}
         aria-label="Undo"
         className={desktopButtonClass(canUndo)}
@@ -76,7 +76,7 @@ export default function HistoryControls({
       </button>
       <button
         type="button"
-        onClick={redo}
+        onClick={() => redo()}
         disabled={!canRedo}
         aria-label="Redo"
         className={desktopButtonClass(canRedo)}
